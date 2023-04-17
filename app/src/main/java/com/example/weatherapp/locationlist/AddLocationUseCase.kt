@@ -10,7 +10,7 @@ class AddLocationUseCase @Inject constructor(
     suspend fun execute(location: Location) {
         val locations = locationDataStore.getLocations().firstOrNull()
         val locationLimit = locationRepositoryConfig.locationLimit
-        if (locationLimit < (locations?.size ?: 0)) {
+        if (locationLimit <= (locations?.size ?: 0)) {
             throw IllegalArgumentException("Can't add more location than $locationLimit")
         }
         val possibleToAdd =

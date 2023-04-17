@@ -23,6 +23,7 @@ kotlinCoroutines = "1.6.4"
 locationPlayService = "21.0.1"
 kotlinXDateTime = "0.4.0"
 dataStore = "1.0.0"
+kotest = "5.6.0"
 
 [libraries]
 androidx-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
@@ -50,6 +51,7 @@ google-playServices-location = { module = "com.google.android.gms:play-services-
 coroutines-playService = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinCoroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinXDateTime" }
 dataStore = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
+testing-kotest= { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 testing-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 testing-mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 testing-junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5" }

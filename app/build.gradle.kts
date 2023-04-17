@@ -82,6 +82,7 @@ dependencies {
     testImplementation(libs.testing.junit5.engine.vintage)
     testImplementation(libs.testing.turbine)
     testImplementation(libs.testing.coroutines)
+    testImplementation(libs.testing.kotest)
     kapt(libs.hilt.android.compiler)
 }
 

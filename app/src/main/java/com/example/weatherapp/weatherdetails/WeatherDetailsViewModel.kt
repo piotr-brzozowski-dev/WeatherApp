@@ -60,11 +60,7 @@ internal class WeatherDetailsViewModel @Inject constructor(
                 val location = Location(locationName, latitude, longitude)
                 addLocationUseCase.execute(location)
             }
-            val prevState = _state.value
-            if (prevState is WeatherDetailsViewState.Loaded) {
-                val previousResults = prevState.weatherDetails
-                _state.emit(WeatherDetailsViewState.Loaded(previousResults, EditMode.READ_ONLY))
-            }
+            _event.send(WeatherDetailsEvent.CloseScreen)
         }
     }
 
