@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherDetailsViewModel @Inject constructor(
+internal class WeatherDetailsViewModel @Inject constructor(
     private val weatherDetailsApi: WeatherDetailsApi,
     private val weatherDetailsMapper: WeatherDetailsMapper,
     private val addLocationUseCase: AddLocationUseCase,
@@ -35,8 +35,12 @@ class WeatherDetailsViewModel @Inject constructor(
     fun onAction(weatherDetailsViewAction: WeatherDetailsViewAction) {
         when (weatherDetailsViewAction) {
             is WeatherDetailsViewAction.LoadWeatherDetails -> fetchWeatherDetails()
-            is WeatherDetailsViewAction.AddLocation -> addLocationToFavourites(weatherDetailsViewAction)
-            is WeatherDetailsViewAction.DeleteLocation -> removeLocationFromFavourites(weatherDetailsViewAction)
+            is WeatherDetailsViewAction.AddLocation -> addLocationToFavourites(
+                weatherDetailsViewAction
+            )
+            is WeatherDetailsViewAction.DeleteLocation -> removeLocationFromFavourites(
+                weatherDetailsViewAction
+            )
         }
     }
 

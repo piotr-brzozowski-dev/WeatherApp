@@ -12,10 +12,10 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class SearchCityViewModel @Inject constructor(
+internal class SearchCityViewModel @Inject constructor(
     private val searchCityApi: SearchCityApi,
     private val searchResultMapper: SearchResultMapper
-): ViewModel() {
+) : ViewModel() {
 
     private val _event: Channel<SearchCityViewEvent> = Channel()
     val event = _event.receiveAsFlow()
@@ -37,7 +37,7 @@ class SearchCityViewModel @Inject constructor(
     }
 
     fun onAction(searchCityViewAction: SearchCityViewAction) {
-        when(searchCityViewAction) {
+        when (searchCityViewAction) {
             is SearchCityViewAction.SearchCityForResults ->
                 searchForResults(searchCityViewAction.searchPhrase)
             is SearchCityViewAction.GoToWeatherDetails ->
@@ -64,7 +64,7 @@ class SearchCityViewModel @Inject constructor(
         }.fold({
             val results = searchResultMapper.map(it)
             SearchCityViewState.SearchCityResultsLoaded(results)
-        },{
+        }, {
             SearchCityViewState.SearchFailed(it.message)
         })
     }

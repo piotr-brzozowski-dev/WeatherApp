@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.locationlist.GetLocationsUseCase
 import com.example.weatherapp.runSuspendCatching
-import com.example.weatherapp.search.SearchCityViewEvent
 import com.example.weatherapp.weatherdetails.WeatherDetailsApi
 import com.example.weatherapp.weatherdetails.WeatherDetailsMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,11 +15,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
     private val getLocationsUseCase: GetLocationsUseCase,
     private val weatherDetailsApi: WeatherDetailsApi,
     private val weatherDetailsMapper: WeatherDetailsMapper
-): ViewModel() {
+) : ViewModel() {
     private val _event: Channel<HomeScreenEvent> = Channel()
     val event = _event.receiveAsFlow()
 
@@ -39,7 +38,7 @@ class HomeViewModel @Inject constructor(
     private fun loadData() {
         viewModelScope.launch {
             val result = getLocationsUseCase.execute()
-                .mapNotNull {location ->
+                .mapNotNull { location ->
                     runSuspendCatching {
                         weatherDetailsApi.getWeatherBasicInfo(
                             location.latitude,

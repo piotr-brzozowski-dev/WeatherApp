@@ -1,6 +1,6 @@
 package com.example.weatherapp.home
 
-sealed class HomeScreenAction {
+internal sealed class HomeScreenAction {
 
     object LoadScreen : HomeScreenAction()
     object GoToSearchScreen : HomeScreenAction()
@@ -8,5 +8,5 @@ sealed class HomeScreenAction {
         val name: String,
         val latitude: Double,
         val longitude: Double
-    ): HomeScreenAction()
+    ) : HomeScreenAction()
 }

@@ -28,7 +28,10 @@ fun HomeUi(
 }
 
 @Composable
-fun LoadedHomeUi(savedLocations: List<WeatherBasicInfo>, actionHandler: (HomeScreenAction) -> Unit) {
+fun LoadedHomeUi(
+    savedLocations: List<WeatherBasicInfo>,
+    actionHandler: (HomeScreenAction) -> Unit
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -58,11 +61,13 @@ private fun LoadedChannelSelector(
                     .padding(Size.spaceS),
                 shape = RoundedCornerShape(Size.spaceXS),
                 onClick = {
-                    actionHandler(HomeScreenAction.GoToWeatherDetails(
-                        it.cityName,
-                        it.latitude,
-                        it.longitude
-                    ))
+                    actionHandler(
+                        HomeScreenAction.GoToWeatherDetails(
+                            it.cityName,
+                            it.latitude,
+                            it.longitude
+                        )
+                    )
                 }
             ) {
                 Column(

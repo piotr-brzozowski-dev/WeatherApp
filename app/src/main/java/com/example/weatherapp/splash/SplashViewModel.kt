@@ -7,8 +7,6 @@ import com.example.weatherapp.geo.LocationPermissionService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,7 +29,7 @@ internal class SplashViewModel @Inject constructor(
     private fun initializeApp() {
         viewModelScope.launch {
             locationPermissionService.requestLocationPermission().collect {
-                when(it) {
+                when (it) {
                     LocationPermissionResult.SUCCESS -> _state.emit(SplashViewState.Initialized)
                     LocationPermissionResult.FAILURE -> _state.emit(SplashViewState.FailedToInit)
                     LocationPermissionResult.RATIONALE -> _state.emit(SplashViewState.FailedToInit)

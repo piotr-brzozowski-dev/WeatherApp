@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchCityActivity: AppCompatActivity() {
+class SearchCityActivity : AppCompatActivity() {
 
     private val searchCityViewModel by viewModels<SearchCityViewModel>()
 
@@ -40,7 +40,9 @@ class SearchCityActivity: AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 searchCityViewModel.event.collect {
                     when (it) {
-                        is SearchCityViewEvent.NavigateToWeatherDetails -> navigateToWeatherDetails(it)
+                        is SearchCityViewEvent.NavigateToWeatherDetails -> navigateToWeatherDetails(
+                            it
+                        )
                     }
                 }
             }

@@ -5,7 +5,7 @@ import com.example.weatherapp.locationlist.LocationRepositoryConfig
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
-class GetEditModeUseCase @Inject constructor(
+internal class GetEditModeUseCase @Inject constructor(
     private val locationDataStore: LocationDataStore,
     private val locationRepositoryConfig: LocationRepositoryConfig
 ) {

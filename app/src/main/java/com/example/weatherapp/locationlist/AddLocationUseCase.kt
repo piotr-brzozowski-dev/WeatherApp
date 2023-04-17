@@ -13,7 +13,8 @@ class AddLocationUseCase @Inject constructor(
         if (locationLimit < (locations?.size ?: 0)) {
             throw IllegalArgumentException("Can't add more location than $locationLimit")
         }
-        val possibleToAdd = locations?.find { it.latitude == location.latitude && it.longitude == location.longitude } == null
+        val possibleToAdd =
+            locations?.find { it.latitude == location.latitude && it.longitude == location.longitude } == null
 
         if (possibleToAdd) {
             locationDataStore.saveLocation(location)

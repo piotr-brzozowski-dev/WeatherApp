@@ -86,7 +86,7 @@ private fun LoadedWeatherDetailsUi(
 @Composable
 private fun WeatherComponent(item: WeatherComponent) {
     item.let {
-        when(it){
+        when (it) {
             is WeatherComponent.Box -> BoxUi(it.label, it.elements)
             is WeatherComponent.Label -> LabelUi(it.value)
             is WeatherComponent.GridItem -> GridItemUi(it.label, it.value)
@@ -125,6 +125,7 @@ private fun GridItemUi(label: String, value: String, modifier: Modifier = Modifi
         Text(text = value, fontSize = FontSize.medium, textAlign = TextAlign.Center)
     }
 }
+
 @Composable
 private fun GridRowUi(items: List<WeatherComponent.GridItem>) {
     Row(
@@ -177,6 +178,7 @@ private fun SmallLabel(value: String) {
         fontSize = FontSize.extraSmall,
     )
 }
+
 @Composable
 private fun LoadingWeatherDetailsUi() {
     Column(

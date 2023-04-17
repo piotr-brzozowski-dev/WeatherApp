@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import javax.inject.Inject
@@ -29,7 +28,7 @@ class LocationDataStore @Inject constructor(
         val updatedLocations = locations.filterNot { it == location }.map {
             Json.encodeToString(serializer(), location)
         }.toSet()
-        dataStore.edit {preferences ->
+        dataStore.edit { preferences ->
             preferences[locationKey] = updatedLocations
         }
     }

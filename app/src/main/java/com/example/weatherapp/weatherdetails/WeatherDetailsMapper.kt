@@ -8,23 +8,30 @@ import javax.inject.Inject
 class WeatherDetailsMapper @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    fun map(cityName: String, weatherDetailsDto: WeatherDetailsDto): WeatherDetails = weatherDetailsDto.let {
-        WeatherDetails(
-            cityName = cityName,
-            latitude = it.latitude,
-            longitude = it.longitude,
-            weatherComponents =  map(cityName, it.currentWeather, it.dailyWeather, it.dailyUnits) + map(it.dailyWeather, it.dailyUnits)
-        )
-    }
+    fun map(cityName: String, weatherDetailsDto: WeatherDetailsDto): WeatherDetails =
+        weatherDetailsDto.let {
+            WeatherDetails(
+                cityName = cityName,
+                latitude = it.latitude,
+                longitude = it.longitude,
+                weatherComponents = map(
+                    cityName,
+                    it.currentWeather,
+                    it.dailyWeather,
+                    it.dailyUnits
+                ) + map(it.dailyWeather, it.dailyUnits)
+            )
+        }
 
-    fun map(cityName: String, weatherBasicInfoDto: WeatherBasicInfoDto): WeatherBasicInfo = weatherBasicInfoDto.let {
-        WeatherBasicInfo(
-            cityName = cityName,
-            latitude = it.latitude,
-            longitude = it.longitude,
-            temperature = "${it.currentWeather.temperature} ${it.dailyUnits.temperature}"
-        )
-    }
+    fun map(cityName: String, weatherBasicInfoDto: WeatherBasicInfoDto): WeatherBasicInfo =
+        weatherBasicInfoDto.let {
+            WeatherBasicInfo(
+                cityName = cityName,
+                latitude = it.latitude,
+                longitude = it.longitude,
+                temperature = "${it.currentWeather.temperature} ${it.dailyUnits.temperature}"
+            )
+        }
 
     private fun map(
         cityName: String,

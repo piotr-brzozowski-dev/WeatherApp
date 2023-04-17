@@ -39,15 +39,21 @@ fun SearchCityUi(
 }
 
 @Composable
-private fun SearchResultsUi(searchResults: List<SearchResult>,
-                            actionHandler: (SearchCityViewAction) -> Unit) {
+private fun SearchResultsUi(
+    searchResults: List<SearchResult>,
+    actionHandler: (SearchCityViewAction) -> Unit
+) {
     LazyColumn {
         items(searchResults) {
             Row(modifier = Modifier
                 .padding(Size.space2XS)
                 .clickable {
                     actionHandler(
-                        SearchCityViewAction.GoToWeatherDetails(it.name, it.latitude, it.longitude)
+                        SearchCityViewAction.GoToWeatherDetails(
+                            it.name,
+                            it.latitude,
+                            it.longitude
+                        )
                     )
                 }
             ) {
