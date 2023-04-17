@@ -24,9 +24,6 @@ fun HomeUi(
     when (val currentState = homeScreenState.value) {
         is HomeScreenState.Loaded -> LoadedHomeUi(currentState.savedLocation, actionHandler)
         HomeScreenState.Loading -> LoadingHomeUi()
-        HomeScreenState.FailedToLoad -> {
-
-        }
     }
 }
 
@@ -80,7 +77,7 @@ private fun LoadedChannelSelector(
                     )
                     Text(
                         modifier = Modifier,
-                        text = "${it.temperature} ${it.temperatureUnit}",
+                        text = it.temperature,
                         fontSize = FontSize.large
                     )
                 }

@@ -3,4 +3,14 @@
     <string name="initialize_app_error">Something went wrong during initialization</string>
     <string name="search_bar_hint">Search for a city</string>
     <string name="weather_title">Weather</string>
+    <string name="wind_speed_label">Wind speed</string>
+    <string name="wind_direction_label">Wind direction</string>
+    <string name="rain_sum_label">Rain sum</string>
+    <string name="uv_index_label">UV index</string>
+    <string name="sunrise_label">Sunrise</string>
+    <string name="sunset_label">Sunset</string>
+    <string name="ten_days_forecast_label">10-Day forecast</string>
+    <string name="forecast_max_temp_label">Max temp: %s</string>
+    <string name="forecast_min_temp_label">Min temp: %s</string>
+    <string name="forecast_rain_sum_label">Rain sum: %s</string>
 </resources>

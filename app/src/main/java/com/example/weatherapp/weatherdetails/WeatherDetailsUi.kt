@@ -75,108 +75,44 @@ private fun LoadedWeatherDetailsUi(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(Size.spaceM))
-                Text(text = cityName, fontSize = FontSize.largeHeader)
-                Text(
-                    text = "${currentWeather.temperature} ${units.temperatureUnit}",
-                    fontSize = FontSize.large
-                )
-                WeatherParametersRowUi {
-                    WeatherParameterUi(
-                        modifier = Modifier.weight(1f),
-                        header = "Wind speed",
-                        value = "${currentWeather.windSpeed} ${units.windSpeedUnit}",
-                    )
-                    WeatherParameterUi(
-                        modifier = Modifier.weight(1f),
-                        header = "Wind direction",
-                        value = "${currentWeather.windDirection}",
-                    )
-                }
-                WeatherParametersRowUi {
-                    WeatherParameterUi(
-                        modifier = Modifier.weight(1f),
-                        header = "Rain sum",
-                        value = "${currentWeather.rainSum} ${units.rainSumUnit}",
-                    )
-                    WeatherParameterUi(
-                        modifier = Modifier.weight(1f),
-                        header = "UV index",
-                        value = currentWeather.uvIndex.toString(),
-                    )
-                }
-                WeatherParametersRowUi {
-                    WeatherParameterUi(
-                        modifier = Modifier.weight(1f),
-                        header = "Sunrise",
-                        value = currentWeather.sunrise.time.toString(),
-                    )
-                    WeatherParameterUi(
-                        modifier = Modifier.weight(1f),
-                        header = "Sunset",
-                        value = currentWeather.sunset.time.toString(),
-                    )
+                weatherComponents.map {
+                    WeatherComponent(it)
                 }
             }
-            WeatherForecastsUi(weatherDetails.forecast)
         }
     }
 }
 
 @Composable
-private fun WeatherForecastsUi(forecast: List<Forecast>) {
+private fun WeatherComponent(item: WeatherComponent) {
+    item.let {
+        when(it){
+            is WeatherComponent.Box -> BoxUi(it.label, it.elements)
+            is WeatherComponent.Label -> LabelUi(it.value)
+            is WeatherComponent.GridItem -> GridItemUi(it.label, it.value)
+            is WeatherComponent.HorizontalListItem -> HorizontalListItemUi(it.items)
+            is WeatherComponent.GridRow -> GridRowUi(it.items)
+            is WeatherComponent.Header -> HeaderUi(it.value)
+            is WeatherComponent.SmallLabel -> SmallLabel(it.value)
+        }
+    }
+}
+
+@Composable
+private fun HeaderUi(value: String) {
+    Text(text = value, fontSize = FontSize.largeHeader)
+}
+
+@Composable
+private fun LabelUi(value: String) {
     Text(
-        text = "10-Day forecast",
-        fontSize = FontSize.medium
+        text = value,
+        fontSize = FontSize.large
     )
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(Size.space2XS, Color.LightGray, RoundedCornerShape(Size.spaceXS))
-    ) {
-        LazyColumn {
-            items(forecast) {
-                Row(
-                    modifier = Modifier
-                        .padding(Size.space2XS)
-                ) {
-                    Text(
-                        text = it.time.dayOfWeek.toString(),
-                        fontSize = FontSize.small,
-                    )
-                    Spacer(modifier = Modifier.width(Size.spaceS))
-                    Text(
-                        text = "max temp: ${it.minTemperature}",
-                        fontSize = FontSize.small,
-                    )
-                    Spacer(modifier = Modifier.width(Size.spaceS))
-                    Text(
-                        text = "min temp: ${it.minTemperature}",
-                        fontSize = FontSize.small,
-                    )
-                    Spacer(modifier = Modifier.width(Size.spaceS))
-                    Text(
-                        text = "rain sum: ${it.rainSum}",
-                        fontSize = FontSize.small,
-                    )
-                }
-            }
-        }
-    }
 }
 
 @Composable
-private fun WeatherParametersRowUi(content: @Composable RowScope.() -> Unit) {
-    Row(
-        modifier = Modifier
-            .height(Size.space10XL)
-            .fillMaxWidth()
-    ) {
-        content()
-    }
-}
-
-@Composable
-private fun WeatherParameterUi(modifier: Modifier, header: String, value: String) {
+private fun GridItemUi(label: String, value: String, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxHeight()
@@ -185,11 +121,62 @@ private fun WeatherParameterUi(modifier: Modifier, header: String, value: String
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = header, fontSize = FontSize.small)
+        Text(text = label, fontSize = FontSize.small)
         Text(text = value, fontSize = FontSize.medium, textAlign = TextAlign.Center)
     }
 }
+@Composable
+private fun GridRowUi(items: List<WeatherComponent.GridItem>) {
+    Row(
+        modifier = Modifier
+            .height(Size.space10XL)
+            .fillMaxWidth()
+    ) {
+        items.map {
+            GridItemUi(it.label, it.value, Modifier.weight(1f))
+        }
+    }
+}
 
+@Composable
+private fun BoxUi(label: String, items: List<WeatherComponent>) {
+    Text(
+        text = label,
+        fontSize = FontSize.medium
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(Size.space2XS, Color.LightGray, RoundedCornerShape(Size.spaceXS))
+    ) {
+        LazyColumn {
+            items(items) {
+                WeatherComponent(it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun HorizontalListItemUi(items: List<WeatherComponent>) {
+    Row(
+        modifier = Modifier
+            .padding(Size.space2XS)
+    ) {
+        items.map {
+            WeatherComponent(it)
+            Spacer(modifier = Modifier.width(Size.spaceS))
+        }
+    }
+}
+
+@Composable
+private fun SmallLabel(value: String) {
+    Text(
+        text = value,
+        fontSize = FontSize.extraSmall,
+    )
+}
 @Composable
 private fun LoadingWeatherDetailsUi() {
     Column(

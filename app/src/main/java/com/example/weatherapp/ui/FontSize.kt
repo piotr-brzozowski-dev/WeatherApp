@@ -7,4 +7,5 @@ object FontSize {
     val largeHeader = 36.sp
     val medium = 24.sp
     val small = 16.sp
+    val extraSmall = 12.sp
 }
