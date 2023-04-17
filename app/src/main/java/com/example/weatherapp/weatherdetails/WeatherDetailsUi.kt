@@ -18,7 +18,7 @@ import com.example.weatherapp.ui.FontSize
 import com.example.weatherapp.ui.Size
 
 @Composable
-fun WeatherDetailsUi(
+internal fun WeatherDetailsUi(
     weatherDetailsViewState: State<WeatherDetailsViewState>,
     actionHandler: (WeatherDetailsViewAction) -> Unit
 ) {

@@ -17,7 +17,7 @@ import com.example.weatherapp.ui.Size
 import com.example.weatherapp.weatherdetails.WeatherBasicInfo
 
 @Composable
-fun HomeUi(
+internal fun HomeUi(
     homeScreenState: State<HomeScreenState>,
     actionHandler: (HomeScreenAction) -> Unit
 ) {
@@ -28,7 +28,7 @@ fun HomeUi(
 }
 
 @Composable
-fun LoadedHomeUi(
+internal fun LoadedHomeUi(
     savedLocations: List<WeatherBasicInfo>,
     actionHandler: (HomeScreenAction) -> Unit
 ) {

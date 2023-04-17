@@ -19,7 +19,7 @@ import com.example.weatherapp.ui.SearchBarUi
 import com.example.weatherapp.ui.Size
 
 @Composable
-fun SearchCityUi(
+internal fun SearchCityUi(
     searchCityViewState: State<SearchCityViewState>,
     actionHandler: (SearchCityViewAction) -> Unit
 ) {
