@@ -26,7 +26,7 @@ class LocationDataStore @Inject constructor(
     suspend fun removeLocation(location: Location) {
         val locations = getLocations().firstOrNull() ?: mutableListOf()
         val updatedLocations = locations.filterNot { it == location }.map {
-            Json.encodeToString(serializer(), location)
+            Json.encodeToString(serializer(), it)
         }.toSet()
         dataStore.edit { preferences ->
             preferences[locationKey] = updatedLocations
