@@ -17,11 +17,12 @@ internal class DeleteLocationUseCaseTest {
     private val useCase = DeleteLocationUseCase(locationDataStore)
 
     @Test
-    fun `when removing location using use case then location should be removed from data store`() = runTest {
-        val location = Location("test", 1.0, 1.0)
+    fun `when removing location using use case then location should be removed from data store`() =
+        runTest {
+            val location = Location("test", 1.0, 1.0)
 
-        useCase.execute(location)
+            useCase.execute(location)
 
-        coVerify { locationDataStore.removeLocation(location) }
-    }
+            coVerify { locationDataStore.removeLocation(location) }
+        }
 }

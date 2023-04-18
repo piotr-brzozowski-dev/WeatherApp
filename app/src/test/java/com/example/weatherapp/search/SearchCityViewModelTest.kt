@@ -15,18 +15,16 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(TestCoroutineExtension::class)
 internal class SearchCityViewModelTest {
 
-    private val searchCityApi = relaxedMock<SearchCityApi>()
-    private val searchResultMapper = relaxedMock<SearchResultMapper>()
+    private val searchResultRepository = relaxedMock<SearchResultRepository>()
     private val viewModel by lazy {
-        SearchCityViewModel(searchCityApi, searchResultMapper)
+        SearchCityViewModel(searchResultRepository)
     }
 
     @Test
     fun `when fetching search results then search results list should be emitted`() = runTest {
-        val searchResultsDto = relaxedMock<SearchResultsDto>()
         val results = listOf<SearchResult>(relaxedMock())
-        coEvery { searchCityApi.getSearchResults("test") } returns searchResultsDto
-        coEvery { searchResultMapper.map(searchResultsDto) } returns results
+        coEvery { searchResultRepository.getSearchResults("test") } returns Result.success(results)
+
         viewModel.state.test {
             awaitItem() shouldBe SearchCityViewState.SearchCityResultsLoaded(emptyList())
             viewModel.onAction(SearchCityViewAction.SearchCityForResults("test"))
@@ -35,8 +33,13 @@ internal class SearchCityViewModelTest {
     }
 
     @Test
-    fun `when fetching search results with error failed event should be emitted`() = runTest {
-        coEvery { searchCityApi.getSearchResults("test") } throws Exception("test")
+    fun `when fetching search results with error then failed event should be emitted`() = runTest {
+        coEvery { searchResultRepository.getSearchResults("test") } returns Result.failure(
+            Exception(
+                "test"
+            )
+        )
+
         viewModel.state.test {
             awaitItem() shouldBe SearchCityViewState.SearchCityResultsLoaded(emptyList())
             viewModel.onAction(SearchCityViewAction.SearchCityForResults("test"))
@@ -45,11 +48,12 @@ internal class SearchCityViewModelTest {
     }
 
     @Test
-    fun `when navigating to weather details then navigation even with search details should be emitted`() = runTest {
-        viewModel.event.test {
-            viewModel.onAction(SearchCityViewAction.GoToWeatherDetails("test", 1.0, 1.0))
+    fun `when navigating to weather details then navigation even with search details should be emitted`() =
+        runTest {
+            viewModel.event.test {
+                viewModel.onAction(SearchCityViewAction.GoToWeatherDetails("test", 1.0, 1.0))
 
-            awaitItem() shouldBe SearchCityViewEvent.NavigateToWeatherDetails("test", 1.0, 1.0)
+                awaitItem() shouldBe SearchCityViewEvent.NavigateToWeatherDetails("test", 1.0, 1.0)
+            }
         }
-    }
 }

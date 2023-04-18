@@ -3,9 +3,7 @@ package com.example.weatherapp.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.locationlist.GetLocationsUseCase
-import com.example.weatherapp.runSuspendCatching
-import com.example.weatherapp.weatherdetails.WeatherDetailsApi
-import com.example.weatherapp.weatherdetails.WeatherDetailsMapper
+import com.example.weatherapp.weatherdetails.WeatherDetailsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
     private val getLocationsUseCase: GetLocationsUseCase,
-    private val weatherDetailsApi: WeatherDetailsApi,
-    private val weatherDetailsMapper: WeatherDetailsMapper
+    private val weatherDetailsRepository: WeatherDetailsRepository,
 ) : ViewModel() {
     private val _event: Channel<HomeScreenEvent> = Channel()
     val event = _event.receiveAsFlow()
@@ -39,14 +36,11 @@ internal class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val result = getLocationsUseCase.execute()
                 .mapNotNull { location ->
-                    runSuspendCatching {
-                        weatherDetailsApi.getWeatherBasicInfo(
-                            location.latitude,
-                            location.longitude
-                        )
-                    }.fold({
-                        weatherDetailsMapper.map(location.name, it)
-                    }, { null })
+                    weatherDetailsRepository.getWeatherBasicInfo(
+                        location.name,
+                        location.latitude,
+                        location.longitude
+                    ).getOrNull()
                 }
             _state.emit(HomeScreenState.Loaded(result))
         }

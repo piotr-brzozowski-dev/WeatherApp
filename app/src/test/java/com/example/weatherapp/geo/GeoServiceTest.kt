@@ -62,7 +62,10 @@ internal class GeoServiceTest {
         every { getLocationMapper.map(location) } returns geoLocation
         every { locationPermissionCheck.checkAccessCourseLocation() } returns PermissionChecker.PERMISSION_GRANTED
         every {
-            fusedLocationProviderClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cancellationToken)
+            fusedLocationProviderClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                cancellationToken
+            )
         } returns locationTask
 
         val result = service.getLocation()

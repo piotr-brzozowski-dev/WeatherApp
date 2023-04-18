@@ -11,7 +11,8 @@ import org.junit.jupiter.api.extension.BeforeTestExecutionCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 
 @ExperimentalCoroutinesApi
-class TestCoroutineExtension(private val dispatcher: TestDispatcher = StandardTestDispatcher()): BeforeTestExecutionCallback,
+class TestCoroutineExtension(private val dispatcher: TestDispatcher = StandardTestDispatcher()) :
+    BeforeTestExecutionCallback,
     AfterTestExecutionCallback {
 
     override fun beforeTestExecution(context: ExtensionContext?) {

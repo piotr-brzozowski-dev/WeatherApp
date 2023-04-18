@@ -22,35 +22,44 @@ internal class SplashViewModelTest {
     private val viewModel = SplashViewModel(locationPermissionService)
 
     @Test
-    fun `when requesting location permission with success then initialized state should be emitted`() = runTest {
-        every { locationPermissionService.requestLocationPermission() } returns flowOf(LocationPermissionResult.SUCCESS)
+    fun `when requesting location permission with success then initialized state should be emitted`() =
+        runTest {
+            every { locationPermissionService.requestLocationPermission() } returns flowOf(
+                LocationPermissionResult.SUCCESS
+            )
 
-        viewModel.state.test {
-            awaitItem() shouldBe SplashViewState.Loading
-            viewModel.onAction(SplashViewAction.InitializeApp)
-            awaitItem() shouldBe SplashViewState.Initialized(true)
+            viewModel.state.test {
+                awaitItem() shouldBe SplashViewState.Loading
+                viewModel.onAction(SplashViewAction.InitializeApp)
+                awaitItem() shouldBe SplashViewState.Initialized(true)
+            }
         }
-    }
 
     @Test
-    fun `when requesting location permission with failure then initialized state should be emitted`() = runTest {
-        every { locationPermissionService.requestLocationPermission() } returns flowOf(LocationPermissionResult.FAILURE)
+    fun `when requesting location permission with failure then initialized state should be emitted`() =
+        runTest {
+            every { locationPermissionService.requestLocationPermission() } returns flowOf(
+                LocationPermissionResult.FAILURE
+            )
 
-        viewModel.state.test {
-            awaitItem() shouldBe SplashViewState.Loading
-            viewModel.onAction(SplashViewAction.InitializeApp)
-            awaitItem() shouldBe SplashViewState.Initialized(false)
+            viewModel.state.test {
+                awaitItem() shouldBe SplashViewState.Loading
+                viewModel.onAction(SplashViewAction.InitializeApp)
+                awaitItem() shouldBe SplashViewState.Initialized(false)
+            }
         }
-    }
 
     @Test
-    fun `when requesting location permission with reationale then initialized state should be emitted`() = runTest {
-        every { locationPermissionService.requestLocationPermission() } returns flowOf(LocationPermissionResult.RATIONALE)
+    fun `when requesting location permission with reationale then initialized state should be emitted`() =
+        runTest {
+            every { locationPermissionService.requestLocationPermission() } returns flowOf(
+                LocationPermissionResult.RATIONALE
+            )
 
-        viewModel.state.test {
-            awaitItem() shouldBe SplashViewState.Loading
-            viewModel.onAction(SplashViewAction.InitializeApp)
-            awaitItem() shouldBe SplashViewState.Initialized(false)
+            viewModel.state.test {
+                awaitItem() shouldBe SplashViewState.Loading
+                viewModel.onAction(SplashViewAction.InitializeApp)
+                awaitItem() shouldBe SplashViewState.Initialized(false)
+            }
         }
-    }
 }

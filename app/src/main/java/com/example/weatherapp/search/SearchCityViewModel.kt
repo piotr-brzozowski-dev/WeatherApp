@@ -2,7 +2,6 @@ package com.example.weatherapp.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.runSuspendCatching
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -13,8 +12,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 internal class SearchCityViewModel @Inject constructor(
-    private val searchCityApi: SearchCityApi,
-    private val searchResultMapper: SearchResultMapper
+    private val searchResultRepository: SearchResultRepository
 ) : ViewModel() {
 
     private val _event: Channel<SearchCityViewEvent> = Channel()
@@ -59,14 +57,12 @@ internal class SearchCityViewModel @Inject constructor(
     }
 
     private suspend fun searchForCities(searchPhrase: String): SearchCityViewState {
-        return runSuspendCatching {
-            searchCityApi.getSearchResults(searchPhrase)
-        }.fold({
-            val results = searchResultMapper.map(it)
-            SearchCityViewState.SearchCityResultsLoaded(results)
-        }, {
-            SearchCityViewState.SearchFailed(it.message)
-        })
+        return searchResultRepository.getSearchResults(searchPhrase)
+            .fold({
+                SearchCityViewState.SearchCityResultsLoaded(it)
+            }, {
+                SearchCityViewState.SearchFailed(it.message)
+            })
     }
 
 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.locationlist.AddLocationUseCase
 import com.example.weatherapp.locationlist.DeleteLocationUseCase
 import com.example.weatherapp.locationlist.Location
-import com.example.weatherapp.runSuspendCatching
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class WeatherDetailsViewModel @Inject constructor(
-    private val weatherDetailsApi: WeatherDetailsApi,
-    private val weatherDetailsMapper: WeatherDetailsMapper,
+    private val weatherDetailsRepository: WeatherDetailsRepository,
     private val addLocationUseCase: AddLocationUseCase,
     private val deleteLocationUseCase: DeleteLocationUseCase,
     private val getEditModeUseCase: GetEditModeUseCase,
@@ -68,21 +66,14 @@ internal class WeatherDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             val weatherDetailsArgs =
                 savedStateHandle.get<WeatherDetailsArgs>(WeatherDetailsActivity.ARGS)!!
-            runSuspendCatching {
-                weatherDetailsApi.getWeatherDetails(
-                    weatherDetailsArgs.latitude, weatherDetailsArgs.longitude
-                )
-            }.onSuccess {
-                val result = weatherDetailsMapper.map(weatherDetailsArgs.cityName, it)
-                _state.emit(
-                    WeatherDetailsViewState.Loaded(
-                        result,
-                        getEditModeUseCase.execute(result)
-                    )
-                )
-            }.onFailure {
-                _event.send(WeatherDetailsEvent.FetchWeatherDetailsFailed(it.message))
-            }
+            val (cityName, latitude, longitude) = weatherDetailsArgs
+            weatherDetailsRepository.getWeatherDetails(cityName, latitude, longitude)
+                .onSuccess {
+                    _state.emit(WeatherDetailsViewState.Loaded(it, getEditModeUseCase.execute(it)))
+                }
+                .onFailure {
+                    _event.send(WeatherDetailsEvent.FetchWeatherDetailsFailed(it.message))
+                }
         }
     }
 }

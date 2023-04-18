@@ -34,7 +34,15 @@ internal class AddLocationUseCaseTest {
     @Test
     fun `when adding location to not full list then location should be stored`() = runTest {
         val location = Location("Test", 2.0, 2.0)
-        coEvery { locationDataStore.getLocations() } returns flowOf(listOf(Location("Test1", 1.0, 1.0)))
+        coEvery { locationDataStore.getLocations() } returns flowOf(
+            listOf(
+                Location(
+                    "Test1",
+                    1.0,
+                    1.0
+                )
+            )
+        )
 
         addLocationUseCase.execute(location)
 

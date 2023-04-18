@@ -22,40 +22,43 @@ internal class GetLocationsUseCaseTest {
     private val useCase = GetLocationsUseCase(geoService, locationDataStore)
 
     @Test
-    fun `when fetching locations without current location available then stored list should be returned`() = runTest {
-        val locationList = listOf(
-            Location("Test1", 1.0, 1.0),
-            Location("Test2", 1.0, 1.0)
-        )
-        coEvery { geoService.getLocation() } returns null
-        coEvery { locationDataStore.getLocations() } returns flowOf(locationList)
+    fun `when fetching locations without current location available then stored list should be returned`() =
+        runTest {
+            val locationList = listOf(
+                Location("Test1", 1.0, 1.0),
+                Location("Test2", 1.0, 1.0)
+            )
+            coEvery { geoService.getLocation() } returns null
+            coEvery { locationDataStore.getLocations() } returns flowOf(locationList)
 
-        val results = useCase.execute()
+            val results = useCase.execute()
 
-        results shouldBe locationList
-    }
-
-    @Test
-    fun `when fetching locations with current location available then stored list should be returned`() = runTest {
-        val locationList = listOf(
-            Location("Test1", 1.0, 1.0),
-            Location("Test2", 1.0, 1.0)
-        )
-        coEvery { geoService.getLocation() } returns GeoLocation(1.0, 1.0)
-        coEvery { locationDataStore.getLocations() } returns flowOf(locationList)
-
-        val results = useCase.execute()
-
-        results shouldBe (listOf(Location("Current location", 1.0, 1.0)) + locationList)
-    }
+            results shouldBe locationList
+        }
 
     @Test
-    fun `when fetching locations without current location available and without stored items then empty list should be returned`() = runTest {
-        coEvery { geoService.getLocation() } returns null
-        coEvery { locationDataStore.getLocations() } returns flowOf(emptyList())
+    fun `when fetching locations with current location available then stored list should be returned`() =
+        runTest {
+            val locationList = listOf(
+                Location("Test1", 1.0, 1.0),
+                Location("Test2", 1.0, 1.0)
+            )
+            coEvery { geoService.getLocation() } returns GeoLocation(1.0, 1.0)
+            coEvery { locationDataStore.getLocations() } returns flowOf(locationList)
 
-        val results = useCase.execute()
+            val results = useCase.execute()
 
-        results shouldBe emptyList()
-    }
+            results shouldBe (listOf(Location("Current location", 1.0, 1.0)) + locationList)
+        }
+
+    @Test
+    fun `when fetching locations without current location available and without stored items then empty list should be returned`() =
+        runTest {
+            coEvery { geoService.getLocation() } returns null
+            coEvery { locationDataStore.getLocations() } returns flowOf(emptyList())
+
+            val results = useCase.execute()
+
+            results shouldBe emptyList()
+        }
 }
