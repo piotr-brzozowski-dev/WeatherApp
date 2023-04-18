@@ -30,9 +30,9 @@ internal class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             locationPermissionService.requestLocationPermission().collect {
                 when (it) {
-                    LocationPermissionResult.SUCCESS -> _state.emit(SplashViewState.Initialized)
-                    LocationPermissionResult.FAILURE -> _state.emit(SplashViewState.FailedToInit)
-                    LocationPermissionResult.RATIONALE -> _state.emit(SplashViewState.FailedToInit)
+                    LocationPermissionResult.SUCCESS -> _state.emit(SplashViewState.Initialized(true))
+                    LocationPermissionResult.FAILURE -> _state.emit(SplashViewState.Initialized(false))
+                    LocationPermissionResult.RATIONALE -> _state.emit(SplashViewState.Initialized(false))
                 }
             }
         }

@@ -1,7 +1,6 @@
 package com.example.weatherapp.splash
 
 internal sealed class SplashViewState {
-    object Initialized : SplashViewState()
+    data class Initialized(val permissionGranted: Boolean) : SplashViewState()
     object Loading : SplashViewState()
-    object FailedToInit : SplashViewState()
 }

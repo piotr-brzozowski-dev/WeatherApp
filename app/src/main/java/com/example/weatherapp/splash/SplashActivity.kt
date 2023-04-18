@@ -35,25 +35,12 @@ class SplashActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.state.collect {
                     when (it) {
-                        SplashViewState.Initialized -> onInitialized()
+                        is SplashViewState.Initialized -> onInitialized()
                         SplashViewState.Loading -> {}
-                        SplashViewState.FailedToInit -> showErrorDialog()
                     }
                 }
             }
         }
-    }
-
-    private fun showErrorDialog() {
-
-        startActivity(HomeActivity.makeIntent(this))
-        finish()
-//        val errorData = ErrorDialogData(
-//            message = getString(R.string.initialize_app_error),
-//            action = {
-//                finish()
-//            })
-//        ErrorDialogFragment.newInstance(errorData).show(supportFragmentManager, errorData.tag)
     }
 
     private fun onInitialized() {
