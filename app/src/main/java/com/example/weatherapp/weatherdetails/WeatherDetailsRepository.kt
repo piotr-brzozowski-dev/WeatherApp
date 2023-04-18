@@ -2,7 +2,9 @@ package com.example.weatherapp.weatherdetails
 
 import com.example.weatherapp.runSuspendCatching
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class WeatherDetailsRepository @Inject constructor(
     private val weatherDetailsApi: WeatherDetailsApi,
     private val weatherDetailsMapper: WeatherDetailsMapper

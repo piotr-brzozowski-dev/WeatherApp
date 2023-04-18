@@ -1,7 +1,9 @@
 package com.example.weatherapp.search
 
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class SearchResultMapper @Inject constructor() {
 
     fun map(searchResults: SearchResultsDto): List<SearchResult> = searchResults
